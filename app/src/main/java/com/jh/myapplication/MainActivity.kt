@@ -1,3 +1,12 @@
+//Build: HAN JEONGHUN
+//DEV TOOL : Intellij IDEA ultimate
+//OS: WINDOWS 11 AND MAC OS
+//First Build: 17 mar 2023
+
+//description:
+//지하철 api 를 활용 한 실시간 열차 도착 알리미 앱
+
+
 package com.jh.myapplication
 
 import android.annotation.SuppressLint
@@ -9,6 +18,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -57,10 +68,10 @@ class MainActivity : AppCompatActivity() {
         searchSubway()
     }
 
-    fun onCreateOptionsMenu(menu: Menu?, ture: Boolean): Boolean {
-        val inflater = MenuInflater = menuInflater
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = MenuInflater(this)
         inflater.inflate(R.menu.main_menu, menu)
-        return ture
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -75,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     subwayArrayAdapter.notifyDataSetChanged()
                     searchSubway()
                 }, 2000)
-                return true
+                true
             }
 
             else -> super.onOptionsItemSelected(item)
@@ -102,9 +113,7 @@ class MainActivity : AppCompatActivity() {
                     noResultTextView.visibility = View.VISIBLE
                 } else {
                     noResultTextView.visibility = View.GONE
-                    subwayInfoList.forEach {
-                        subwayList.add(it)
-                    }
+                    subwayList.addAll(subwayInfoList)
                     subwayArrayAdapter.notifyDataSetChanged()
                 }
                 swipeRefreshLayout.isRefreshing = false
@@ -112,57 +121,53 @@ class MainActivity : AppCompatActivity() {
         }.start()
     }
 
-    private fun parseSubwayInfoList(response: String): Any {
-
-    }
-
-    private fun getHttpResponse(urlStr: String): String {
-
-        val url = URL(urlStr)
-
-        val connection = url.openConnection() as HttpURLConnection
-        connection.requestMethod = "GET"
-        connection.readTimeout = 15000
-        connection.connectTimeout = 15000
-        connection.doInput = true
+    private fun parseSubwayInfoList(response: String): ArrayList<String> {
+        val subwayInfoList = ArrayList<String>()
 
         try {
-            connection.connect()
+            val jsonObject = JSONObject(response)
+            val jsonArray: JSONArray = jsonObject.getJSONArray("realtimeArrivalList")
 
-            val responseCode = connection.responseCode
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                val inputStream = connection.inputStream
-                val reader = BufferedReader(InputStreamReader(inputStream))
-                val response = StringBuffer()
+            for (i in 0 until jsonArray.length()) {
+                val item = jsonArray.getJSONObject(i)
+                val subwayName = item.getString("subwayId")
+                val arrivalMsg = item.getString("arvlMsg2")
 
-                var line: String? = reader.readLine()
-                while (line != null) {
-                    response.append(line)
-                    line = reader.readLine()
-                }
-                reader.close()
-                inputStream.close()
-
-                return response.toString()
-            } else {
-                return ""
+                val subwayInfo = "$subwayName : $arrivalMsg"
+                subwayInfoList.add(subwayInfo)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return ""
+        }
+
+        return subwayInfoList
+    }
+
+    private fun getHttpResponse(urlStr: String): String {
+        val url = URL(urlStr)
+        val connection = url.openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        connection.connectTimeout = 5000
+        connection.readTimeout = 5000
+
+        try {
+            val input = BufferedReader(InputStreamReader(connection.inputStream))
+            val response = StringBuffer()
+
+            var line = input.readLine()
+            while (line != null) {
+                response.append(line)
+                line = input.readLine()
+            }
+
+            return response.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
         } finally {
             connection.disconnect()
         }
+
+        return ""
     }
-}
-
-private fun Any.forEach(function: () -> Boolean) {
 
 }
-
-private fun Any.isEmpty(): Boolean {
-
-}
-
-
-
