@@ -1,6 +1,99 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+
 plugins {
     id 'com.android.application' version '7.3.0' apply false
     id 'com.android.library' version '7.3.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
+}
+
+apply{
+    apply plugin: 'com.android.application'
+}
+
+
+//sdk version
+android{
+    namespace 'com.jh.myapplication'
+
+    compileSdkVersion 33
+
+    //compileSdkVersion 31
+    buildToolsVersion "32.0.0"
+
+    defaultConfig{
+
+        //app_id
+        applicationId "com.jh.myapplication"
+
+        //최소 SDK(ANDROID) 버전
+        minSdkVersion 21
+
+        //target sdk (ANDROID) 버전
+        targetSdkVersion 33
+
+        //버전 코드
+        versionCode 1
+
+        //버전 이름
+        versionName "1.0"
+
+        //jUnit Test (ANDROID)
+        testInstrumentationRunner "androidx.test.runner.AndroidJunitTestRunner"
+
+        //메소드 제한 (65536 개) 을 초과 하여 사용 하기 위해, 멀티 DEX (Dalvik Executable) 사용 및 프로세스 구성
+        multiDexEnabled true
+    }
+
+    //빌드 타입
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+
+    //컴파일 옵션
+    compileOptions{
+
+        //최소 자바 버전을 JAVA 8 로 지정 한다. (그 미만에서 작성 된 코드는 컴파일 할 수 없다)
+        sourceCompatibility JavaVersion.VERSION_1_8
+
+        //컴파일 된 클래스 파일이 JAVA 10 버전에서 호환성을 가진다.
+        //(JAVA 10 미만에서는 실행 시 오류 발생 가능성이 있다.)
+        //targetCompatibility JavaVersion.VERSION_1_10
+
+        //JAVA 버전 불일치 오류를 방지 하기 위해서는,
+        //sourceCompatibility JavaVersion 과,
+        //targetCompatibility JavaVersion 이 동일해야 한다.
+
+        //아래와 같이 수정하면, 정상 작동 될 것이다.
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    //kotlin Option 추가
+    kotlinOptions {
+        jvmTarger ="1.8"
+    }
+}
+
+//의존성 추가
+dependencies {
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:<version>'
+
+
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
 }

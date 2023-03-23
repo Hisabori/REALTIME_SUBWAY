@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/build/classes/artifacts/My_Application_app_main_ear_exploded</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="My_Application.app.main/javaeeApplication/javaEEApplication" />
+      <element id="module-output" name="My_Application.app.main" />
+      <element id="module-test-output" name="My_Application.app.unitTest" />
     </root>
   </artifact>
 </component>

@@ -17,7 +17,7 @@
 
 60 ~ 66: ListView에 역 정보를 클릭 시 때 실행될 이벤트 리스너를 정의한다.
 
-68 ~ 74 SwipeRefreshLayout 객체에 새로고침 이벤트 리스너를 정의한다
+68 ~ 74: SwipeRefreshLayout 객체에 새로고침 이벤트 리스너를 정의한다
 
 76: searchSubway() method를 호출한다.
 

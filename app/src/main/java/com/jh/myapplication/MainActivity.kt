@@ -10,6 +10,7 @@
 package com.jh.myapplication
 
 import android.annotation.SuppressLint
+import android.os.Build.VERSION_CODES.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -25,6 +26,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
+import androidx.appcompat.app.*;
 
 class MainActivity : AppCompatActivity() {
     private lateinit var stationEditText: EditText
@@ -42,8 +44,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        setContentView(R.layout.activity_main);
         stationEditText = findViewById(R.id.stationEditText)
         subwayListView = findViewById(R.id.subway_list_view)
         noResultTextView = findViewById(R.id.no_result_text_view)
